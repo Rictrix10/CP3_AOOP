@@ -1,0 +1,8 @@
+services:
+  sentiment_analysis:
+    container_name: sentiment_analysis
+    build: docker/images/python
+    volumes:
+      - ./src/sentiment_analysis:/usr/src/app
+      - ./docker/volumes/csv:/csv
+    
