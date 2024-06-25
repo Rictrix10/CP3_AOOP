@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import nltk
+import pandas as pd
 from nltk.metrics import ConfusionMatrix
 
 TRAIN_CSV_PATH = "/csv/train.csv"
@@ -20,20 +21,9 @@ print(exemplo_base.Emotion.value_counts())
 
 print((exemplo_base.Emotion.value_counts()/exemplo_base.shape[0])*100)
 
-import pandas as pd
-
 seed = 42
 
-joy_sample = exemplo_base[exemplo_base['Emotion'] == 'joy'].sample(n=500, random_state=seed)
-sadness_sample = exemplo_base[exemplo_base['Emotion'] == 'sadness'].sample(n=500, random_state=seed)
-anger_sample = exemplo_base[exemplo_base['Emotion'] == 'anger'].sample(n=500, random_state=seed)
-fear_sample = exemplo_base[exemplo_base['Emotion'] == 'fear'].sample(n=500, random_state=seed)
-love_sample = exemplo_base[exemplo_base['Emotion'] == 'love'].sample(n=500, random_state=seed)
-surprise_sample = exemplo_base[exemplo_base['Emotion'] == 'surprise'].sample(n=500, random_state=seed)
-
-new_dataset = pd.concat([joy_sample, sadness_sample, anger_sample, fear_sample, love_sample, surprise_sample])
-
-new_dataset = new_dataset.reset_index(drop=True)
+new_dataset = exemplo_base
 
 print('Tamanho da base balanceada {}'.format(new_dataset.shape[0]))
 
@@ -42,7 +32,7 @@ print(new_dataset.Emotion.value_counts())
 new_dataset.sample(n=20)
 
 lista_Stop = nltk.corpus.stopwords.words('english')
-np.transpose(lista_Stop)
+print(np.transpose(lista_Stop))
 
 def removeStopWords(texto):
     frases = []
@@ -90,9 +80,8 @@ def busca_frequencia(palavras):
 
 frequencia_treino = busca_frequencia(palavras_treino)
 
-frequencia_treino.most_common(20)
+print(frequencia_treino.most_common(20))
 
-#Executamos também para a base de treino
 frequencia_teste = busca_frequencia(palavras_teste)
 
 def busca_palavras_unicas(frequencia):
@@ -103,7 +92,6 @@ palavras_unicas_treino = busca_palavras_unicas(frequencia_treino)
 palavras_unicas_teste = busca_palavras_unicas(frequencia_teste)
 
 def extrator_palavras(documento):
-    # Utilizando set() para associar a variavel doc com o parâmetro que esta chegando
     doc = set(documento)
     caracteristicas = {}
     for palavras in palavras_unicas_treino:
@@ -148,7 +136,6 @@ for (frase, classe) in base_completa_teste:
 matriz = ConfusionMatrix(esperado, previsto)
 print(matriz)
 
-# Carregar os comentários do arquivo youtube_comments.csv
 comments_df = pd.read_csv(YT_COMMENTS_PATH)
 comments = comments_df['Comentário']
 
@@ -159,7 +146,6 @@ maior_probabilidade = {'joy': (None, -1), 'sadness': (None, -1), 'anger': (None,
 menor_probabilidade = {'joy': (None, 2), 'sadness': (None, 2), 'anger': (None, 2), 
                        'fear': (None, 2), 'love': (None, 2), 'surprise': (None, 2)}
 
-# Pré-processar e classificar cada comentário
 for comment in comments:
     # Verificar se o comentário é uma string
     if isinstance(comment, str):
