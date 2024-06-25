@@ -37,15 +37,15 @@ print(np.transpose(lista_Stop))
 def removeStopWords(texto):
     frases = []
     for (palavras, sentimento) in texto:
-        # Create a list comprehension to extract only the words that are not in lista_Stop
+        
         semStop = [p for p in palavras.split() if p.lower() not in lista_Stop]
-        # Insert the phrases with the labels (sentimento) already treated by lista_Stop
+        
         frases.append((semStop, sentimento))
     return frases
 
 def aplica_Stemmer(texto):
     stemmer = nltk.stem.RSLPStemmer()
-    # RSLPStemmer is specific to the Portuguese language
+    
     frases_semStemming = []
     for (palavras, sentimento) in texto:
         com_stemming = [str(stemmer.stem(p)) for p in palavras.split() if p.lower() not in lista_Stop]
@@ -139,7 +139,7 @@ print(matriz)
 comments_df = pd.read_csv(YT_COMMENTS_PATH)
 comments = comments_df['Comentário']
 
-# Dicionários para armazenar o maior e menor valor de probabilidade para cada classe
+
 maior_probabilidade = {'joy': (None, -1), 'sadness': (None, -1), 'anger': (None, -1), 
                        'fear': (None, -1), 'love': (None, -1), 'surprise': (None, -1)}
 
@@ -147,7 +147,7 @@ menor_probabilidade = {'joy': (None, 2), 'sadness': (None, 2), 'anger': (None, 2
                        'fear': (None, 2), 'love': (None, 2), 'surprise': (None, 2)}
 
 for comment in comments:
-    # Verificar se o comentário é uma string
+    
     if isinstance(comment, str):
         testeStemming = []
         stemmer = nltk.stem.RSLPStemmer()
@@ -163,19 +163,19 @@ for comment in comments:
             prob = distribuicao.prob(classe)
             print('%s: %f' % (classe, prob))
             
-            # Atualizar maior e menor probabilidade
+            
             if prob > maior_probabilidade[classe][1]:
                 maior_probabilidade[classe] = (comment, prob)
             if prob < menor_probabilidade[classe][1]:
                 menor_probabilidade[classe] = (comment, prob)
                 
         print("\n")
-        print("="*50)  # Adicionar linha de separação entre comentários
+        print("="*50)  
         print("\n")
     else:
         print(f"Comentário inválido: {comment}")
 
-# Imprimir os comentários com maior e menor probabilidade para cada classe
+
 print("\nComentários com maior probabilidade:")
 for classe, (comment, prob) in maior_probabilidade.items():
     print(f"Classe: {classe}, Comentário: {comment}, Probabilidade: {prob}")
