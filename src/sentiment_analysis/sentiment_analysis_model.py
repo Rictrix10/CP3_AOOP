@@ -29,6 +29,7 @@ print('Tamanho da base balanceada {}'.format(new_dataset.shape[0]))
 print(new_dataset.Emotion.value_counts())
 
 new_dataset.sample(n=20)
+print(new_dataset.sample(n=20))
 
 lista_Stop = nltk.corpus.stopwords.words('english')
 print(np.transpose(lista_Stop))
